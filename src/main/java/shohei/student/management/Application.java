@@ -45,5 +45,12 @@ public class Application {
     this.name = name;
   }
 
+  @PostMapping("/Map")
+  public void setStudent(String name, String age) {
+    this.name = name;
+    this.age = age;
+    this.student.put(name, age);
+  }
+
 
 }
