@@ -1,5 +1,7 @@
 package shohei.student.management;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +15,9 @@ public class Application {
 
   private String name = "Shohei Kobayashi";
   private String age = "25";
+  private Map<String, String> student = new HashMap<>() {{
+    put("Wakabayashi Masayasu", "46");
+  }};
 
 
   public static void main(String[] args) {
@@ -22,6 +27,11 @@ public class Application {
   @GetMapping("/studentInfo")
   public String getstudentInfo() {
     return name + " " + age + "歳";
+  }
+
+  @GetMapping("/Map")
+  public Map<String, String> getStudent() {
+    return student;
   }
 
   @PostMapping("/studentInfo")
@@ -34,5 +44,6 @@ public class Application {
   public void updateStudentName(String name) {
     this.name = name;
   }
+
 
 }
