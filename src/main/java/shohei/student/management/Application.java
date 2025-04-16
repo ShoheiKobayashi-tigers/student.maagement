@@ -52,5 +52,26 @@ public class Application {
     this.student.put(name, age);
   }
 
+  @PostMapping("/searchMap")
+  public Map<String, String> searchStudent(String age) {
+    Map<String, String> result = new HashMap<>();
+    this.age = age;
+    for (Map.Entry<String, String> entry : this.student.entrySet()) {
+      if (entry.getValue().equals(age)) {
+        result.put(entry.getKey(), entry.getValue());
+      }
+    }
+    return result;
+  }
+
+  @PostMapping("/remove")
+  public void removeStudent(String name) {
+    for (Map.Entry<String, String> entry : this.student.entrySet()) {
+      if (entry.getKey().equals(name)) {
+        this.student.remove(entry.getKey());
+      }
+    }
+  }
+
 
 }
