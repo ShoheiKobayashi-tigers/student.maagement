@@ -1,6 +1,7 @@
 package shohei.student.management;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -37,9 +38,25 @@ public class Application {
     return student.getName() + " " + student.getAge() + "歳";
   }
 
+  @GetMapping("/student/all")
+  public List<Student> getAllStudent() {
+    return repository.allName();
+  }
+
   @GetMapping("/Map")
   public Map<String, String> getStudent() {
     return student;
+  }
+
+  @GetMapping("/searchMap")
+  public Map<String, String> searchStudent(@RequestParam String age) {
+    Map<String, String> result = new HashMap<>();
+    for (Map.Entry<String, String> entry : this.student.entrySet()) {
+      if (entry.getValue().equals(age)) {
+        result.put(entry.getKey(), entry.getValue());
+      }
+    }
+    return result;
   }
 
   @PostMapping("/student")
@@ -62,18 +79,6 @@ public class Application {
     this.name = name;
     this.age = age;
     this.student.put(name, age);
-  }
-
-  @PostMapping("/searchMap")
-  public Map<String, String> searchStudent(String age) {
-    Map<String, String> result = new HashMap<>();
-    this.age = age;
-    for (Map.Entry<String, String> entry : this.student.entrySet()) {
-      if (entry.getValue().equals(age)) {
-        result.put(entry.getKey(), entry.getValue());
-      }
-    }
-    return result;
   }
 
 
