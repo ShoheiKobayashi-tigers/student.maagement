@@ -15,7 +15,7 @@ public class Application {
 
   private String name = "Shohei Kobayashi";
   private String age = "25";
-  private Map<String, String> student = new HashMap<>() {{
+  private final Map<String, String> student = new HashMap<>() {{
     put("Wakabayashi Masayasu", "46");
   }};
 
@@ -50,6 +50,26 @@ public class Application {
     this.name = name;
     this.age = age;
     this.student.put(name, age);
+  }
+
+  @GetMapping("/searchMap")
+  public Map<String, String> searchStudent(String age) {
+    Map<String, String> result = new HashMap<>();
+    for (Map.Entry<String, String> entry : this.student.entrySet()) {
+      if (entry.getValue().equals(age)) {
+        result.put(entry.getKey(), entry.getValue());
+      }
+    }
+    return result;
+  }
+
+  @PostMapping("/remove")
+  public void removeStudent(String name) {
+    for (Map.Entry<String, String> entry : this.student.entrySet()) {
+      if (entry.getKey().equals(name)) {
+        this.student.remove(entry.getKey());
+      }
+    }
   }
 
 
