@@ -23,7 +23,7 @@ public class Application {
 
   private String name = "Shohei Kobayashi";
   private String age = "25";
-  private Map<String, String> student = new HashMap<>() {{
+  private final Map<String, String> student = new HashMap<>() {{
     put("Wakabayashi Masayasu", "46");
   }};
 
@@ -80,6 +80,7 @@ public class Application {
     this.age = age;
     this.student.put(name, age);
   }
+
 
 
   @PostMapping("/remove")
