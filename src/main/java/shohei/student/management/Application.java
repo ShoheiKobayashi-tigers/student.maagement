@@ -4,12 +4,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import shohei.student.management.data.Courses;
+import shohei.student.management.data.Student;
+import shohei.student.management.repository.StudentRepository;
 
 @SpringBootApplication
 @RestController
@@ -24,31 +23,14 @@ public class Application {
     SpringApplication.run(Application.class, args);
   }
 
-  @GetMapping("/student")
-  public String getstudentInfo(@RequestParam String name) {
-    Student student = repository.searchByName(name);
-    return student.getName() + " " + student.getAge() + "歳";
+  @GetMapping("/studentList")
+  public List<Student> getstudentList() {
+    return repository.search();
   }
 
-  @GetMapping("/student/all")
-  public List<Student> getAllStudent() {
-    return repository.allName();
-  }
-
-
-  @PostMapping("/student")
-  public void registorStudent(String name, int age) {
-    repository.registorStudent(name, age);
-  }
-
-  @PatchMapping("/student")
-  public void updateStudentName(String name, int age) {
-    repository.updateStudentName(name, age);
-  }
-
-  @DeleteMapping("/student")
-  public void deleteStudent(String name) {
-    repository.deleteStudent(name);
+  @GetMapping("/courseList")
+  public List<Courses> getCourseList() {
+    return repository.searchCourses();
   }
 
 
