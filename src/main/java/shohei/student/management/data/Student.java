@@ -1,4 +1,4 @@
-package shohei.student.management;
+package shohei.student.management.data;
 
 import lombok.Getter;
 import lombok.Setter;
