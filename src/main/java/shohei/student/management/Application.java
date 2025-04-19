@@ -1,8 +1,6 @@
 package shohei.student.management;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,12 +19,6 @@ public class Application {
   @Autowired
   private StudentRepository repository;
 
-  private String name = "Shohei Kobayashi";
-  private String age = "25";
-  private final Map<String, String> student = new HashMap<>() {{
-    put("Wakabayashi Masayasu", "46");
-  }};
-
 
   public static void main(String[] args) {
     SpringApplication.run(Application.class, args);
@@ -43,21 +35,6 @@ public class Application {
     return repository.allName();
   }
 
-  @GetMapping("/Map")
-  public Map<String, String> getStudent() {
-    return student;
-  }
-
-  @GetMapping("/searchMap")
-  public Map<String, String> searchStudent(@RequestParam String age) {
-    Map<String, String> result = new HashMap<>();
-    for (Map.Entry<String, String> entry : this.student.entrySet()) {
-      if (entry.getValue().equals(age)) {
-        result.put(entry.getKey(), entry.getValue());
-      }
-    }
-    return result;
-  }
 
   @PostMapping("/student")
   public void registorStudent(String name, int age) {
@@ -72,24 +49,6 @@ public class Application {
   @DeleteMapping("/student")
   public void deleteStudent(String name) {
     repository.deleteStudent(name);
-  }
-
-  @PostMapping("/Map")
-  public void setStudent(String name, String age) {
-    this.name = name;
-    this.age = age;
-    this.student.put(name, age);
-  }
-
-
-
-  @PostMapping("/remove")
-  public void removeStudent(String name) {
-    for (Map.Entry<String, String> entry : this.student.entrySet()) {
-      if (entry.getKey().equals(name)) {
-        this.student.remove(entry.getKey());
-      }
-    }
   }
 
 
