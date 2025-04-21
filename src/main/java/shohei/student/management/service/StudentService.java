@@ -1,7 +1,6 @@
 package shohei.student.management.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import shohei.student.management.data.Courses;
@@ -20,17 +19,11 @@ public class StudentService {
   }
 
   public List<Student> searchStudentsList() {
-    List<Student> allStudents = repository.search();
-
-    return allStudents.stream()
-        .filter(student -> !(student.getAge() < 30 || student.getAge() >= 40))
-        .collect(Collectors.toList());
+    return repository.search();
   }
 
   public List<Courses> searchStudentsCourseList() {
-    List<Courses> allCoursesData = repository.searchCourses();
-    return allCoursesData.stream()
-        .filter(courses -> courses.getCourseName().equals("Java")).collect(Collectors.toList());
+    return repository.searchCourses();
   }
 
 }
