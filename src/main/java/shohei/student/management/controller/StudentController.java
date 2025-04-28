@@ -50,10 +50,7 @@ public class StudentController {
   //受講生情報を登録したのち、コース情報を登録する。
   @GetMapping("/newStudent")
   public String newStudent(Model model) {
-    StudentDetail studentDetail = new StudentDetail();
-    studentDetail.setStudent(new Student());
-    studentDetail.setCourses(new Courses());
-    model.addAttribute("studentDetail", studentDetail);
+    model.addAttribute("studentDetail", new StudentDetail());
     return "registerStudent";
   }
 
@@ -62,12 +59,8 @@ public class StudentController {
     if (result.hasErrors()) {
       return "registerStudent";
     }
-    repository.registerStudent(studentDetail.getStudent().getId(),
-        studentDetail.getStudent().getName(), studentDetail.getStudent().getFurigana(),
-        studentDetail.getStudent().getNickname(), studentDetail.getStudent().getMail(),
-        studentDetail.getStudent().getCity(),
-        studentDetail.getStudent().getAge(), studentDetail.getStudent().getGender(),
-        studentDetail.getStudent().getRemark());
+
+    repository.registerStudent(studentDetail.getStudent());
     String registeredStudentId = studentDetail.getStudent().getId();
     return "redirect:/newCourse?studentId=" + registeredStudentId;
   }
@@ -76,8 +69,7 @@ public class StudentController {
   @GetMapping("/newCourse")
   public String newCourse(@RequestParam(value = "studentId", required = false) String studentId,
       Model model) {
-    Courses courses = new Courses();
-    courses.setStudentId(studentId);
+    Courses courses = new Courses(studentId);
     model.addAttribute("courses", courses);
     return "registerCourse";
   }

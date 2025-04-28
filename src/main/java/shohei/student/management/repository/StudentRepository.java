@@ -35,8 +35,7 @@ public interface StudentRepository {
 
 
   @Insert("INSERT INTO students (id, name, furigana, nickname, mail, city, age, gender, remark) VALUES(#{id}, #{name}, #{furigana}, #{nickname}, #{mail}, #{city}, #{age}, #{gender}, #{remark})")
-  void registerStudent(String id, String name, String furigana, String nickname, String mail,
-      String city, int age, String gender, String remark);
+  void registerStudent(Student student);
 
   @Insert("INSERT INTO  students_courses VALUES(#{courseId}, #{studentId}, #{courseName}, #{whenStart}, #{whenComplete})")
   void registerCourse(String courseId, String studentId, String courseName, LocalDateTime whenStart,
