@@ -12,5 +12,6 @@ public class StudentDetail {
 
   private Student student;
   private List<Courses> studentCourses;
+  private Courses courses;
 
 }

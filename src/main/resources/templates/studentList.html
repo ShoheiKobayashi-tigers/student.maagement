@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>受講生情報一覧</title>
@@ -22,15 +22,42 @@
   </thead>
   <tbody>
   <tr th:each="studentDetail:${studentList}">
-    <td th:text="$studentDetail.student.id}">001</td>
-    <td th:text="$studentDetail.student.name}">近本光司</td>
-    <td th:text="$studentDetail.student.furigana}">ちかもとこうじ</td>
-    <td th:text="$studentDetail.student.nickname}">ちか</td>
-    <td th:text="$studentDetail.student.mail}">KoujiChikamoto@gmail.com</td>
-    <td th:text="$studentDetail.student.city}">兵庫</td>
-    <td th:text="$studentDetail.student.age}">30</td>
-    <td th:text="$studentDetail.student.gender}">male</td>
-    <td th:text="$studentDetail.student.remark}">特になし</td>
+    <td th:text="${studentDetail.student.id}">001</td>
+    <td th:text="${studentDetail.student.name}">近本光司</td>
+    <td th:text="${studentDetail.student.furigana}">ちかもとこうじ</td>
+    <td th:text="${studentDetail.student.nickname}">ちか</td>
+    <td th:text="${studentDetail.student.mail}">KoujiChikamoto@gmail.com</td>
+    <td th:text="${studentDetail.student.city}">兵庫</td>
+    <td th:text="${studentDetail.student.age}">30</td>
+    <td th:text="${studentDetail.student.gender}">male</td>
+    <td th:text="${studentDetail.student.remark}">特になし</td>
+    <td>
+      <a th:href="@{/newCourse(studentId=${studentDetail.student.id})}">コース追加</a>
+      <a th:href="@{/courseList(studentId=${studentDetail.student.id})}">受講コース一覧</a>
+    </td>
+  </tr>
+
+
+  </tbody>
+</table>
+<h1>コース情報一覧</h1>
+<table border="1">
+  <thead>
+  <tr>
+    <th>コースID</th>
+    <th>受講生ID</th>
+    <th>コース名</th>
+    <th>受講開始</th>
+    <th>受講終了予定</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="course : ${courseList}">
+    <td th:text="${course.courseId}">001</td>
+    <td th:text="${course.studentId}">近本光司</td>
+    <td th:text="${course.courseName}">ちかもとこうじ</td>
+    <td th:text="${course.whenStart}">2025-05-01</td>
+    <td th:text="${course.whenComplete}">2025-06-30</td>
   </tr>
   </tbody>
 </table>
