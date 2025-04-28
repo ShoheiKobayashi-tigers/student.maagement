@@ -2,15 +2,15 @@ package shohei.student.management.controller;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 import shohei.student.management.controller.converter.StudentConverter;
 import shohei.student.management.data.Courses;
 import shohei.student.management.data.Student;
-import shohei.student.management.domain.StudentDetail;
 import shohei.student.management.service.StudentService;
 
-@RestController
+@Controller
 public class StudentController {
 
   private StudentService service;
@@ -23,10 +23,11 @@ public class StudentController {
   }
 
   @GetMapping("/studentList")
-  public List<StudentDetail> getstudentList() {
+  public String getstudentList(Model model) {
     List<Student> students = service.searchStudentsList();
     List<Courses> courses = service.searchStudentsCourseList();
-    return converter.convertStudentDetails(students, courses);
+    model.addAttribute("studentList", converter.convertStudentDetails(students, courses));
+    return "studentList";
   }
 
 
