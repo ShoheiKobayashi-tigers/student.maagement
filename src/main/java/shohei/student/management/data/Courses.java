@@ -14,5 +14,13 @@ public class Courses {
   private LocalDateTime whenStart;
   private LocalDateTime whenComplete;
 
+  public Courses(String studentId) {
+    this.studentId = studentId;
+  }
+
+  public Courses() {
+
+  }
+
 
 }

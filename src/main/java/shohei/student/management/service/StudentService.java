@@ -26,4 +26,9 @@ public class StudentService {
     return repository.searchCourses();
   }
 
+  public List<Courses> searchCoursesByStudentId(String studentId) {
+    return repository.findCourses(studentId);
+  }
+
+
 }

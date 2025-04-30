@@ -12,5 +12,15 @@ public class StudentDetail {
 
   private Student student;
   private List<Courses> studentCourses;
+  private Courses courses;
 
+  public StudentDetail(Student student, Courses courses) {
+    this.student = student;
+    this.courses = courses;
+  }
+  
+
+  public StudentDetail() {
+    this(new Student(), new Courses());
+  }
 }
