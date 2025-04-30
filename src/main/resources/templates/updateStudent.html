@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>受講生情報更新</title>
+</head>
+<body>
+<h1>受講生情報更新</h1>
+<form th:action="@{/updateStudent}" th:object="${student}" method="post">
+  <div style="width: 200px;"><label for="id">ID:</label>
+    <input type="text" id="id" th:field="*{id}" readonly/></div>
+  <div style="width: 200px;"><label for="name">名前:</label>
+    <input type="text" id="name" th:field="*{name}"/></div>
+  <div style="width: 200px;"><label for="furigana">ふりがな:</label>
+    <input type="text" id="furigana" th:field="*{furigana}"/></div>
+  <div style="width: 200px;"><label for="nickname">ニックネーム:</label>
+    <input type="text" id="nickname" th:field="*{nickname}"/></div>
+  <div style="width: 200px;"><label for="mail">メールアドレス:</label>
+    <input type="text" id="mail" th:field="*{mail}"/></div>
+  <div style="width: 200px;"><label for="remark">備考:</label>
+    <input type="text" id="remark" th:field="*{remark}"/>
+  </div>
+  <div>
+    <button type="submit">更新</button>
+  </div>
+</form>
+</body>
+</html>

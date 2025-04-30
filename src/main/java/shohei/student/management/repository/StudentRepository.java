@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import shohei.student.management.data.Courses;
 import shohei.student.management.data.Student;
 
@@ -33,11 +34,24 @@ public interface StudentRepository {
   List<Courses> findCourses(@Param("studentId") String studentId);
 
 
-  @Insert("INSERT INTO students (id, name, furigana, nickname, mail, city, age, gender, remark) VALUES(#{id}, #{name}, #{furigana}, #{nickname}, #{mail}, #{city}, #{age}, #{gender}, #{remark})")
+  @Insert("INSERT INTO students (id, name, furigana, nickname, mail, city, birthday,age, gender, remark) VALUES(#{id}, #{name}, #{furigana}, #{nickname}, #{mail}, #{city},#{birthday}. #{age}, #{gender}, #{remark})")
   void registerStudent(Student student);
 
   @Insert("INSERT INTO  students_courses VALUES(#{courseId}, #{studentId}, #{courseName}, #{whenStart}, #{whenComplete})")
   void registerCourse(Courses courses);
+
+  @Update("<script>"
+      + "UPDATE students "
+      + "<set>"
+      + "  <if test='name != null and name != \"\"'>name = #{name},</if>"
+      + "  <if test='furigana != null and furigana != \"\"'>furigana = #{furigana},</if>"
+      + "  <if test='nickname != null and nickname != \"\"'>nickname = #{nickname},</if>"
+      + "  <if test='mail != null and mail != \"\"'>mail = #{mail},</if>"
+      + "  <if test='remark != null'>remark = #{remark},</if>"
+      + "</set>"
+      + "WHERE id = #{id}"
+      + "</script>")
+  void updateStudent(Student student);
 
 
 }

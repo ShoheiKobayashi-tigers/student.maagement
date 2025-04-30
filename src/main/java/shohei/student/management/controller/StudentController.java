@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import shohei.student.management.controller.converter.StudentConverter;
 import shohei.student.management.data.Courses;
 import shohei.student.management.data.Student;
-import shohei.student.management.domain.StudentDetail;
 import shohei.student.management.repository.StudentRepository;
 import shohei.student.management.service.StudentService;
 
@@ -30,7 +29,7 @@ public class StudentController {
   //受講生情報を表示
   @GetMapping("/studentList")
   public String getStudentList(Model model) {
-    List<Student> students = service.searchStudentsList();
+    List<shohei.student.management.data.Student> students = service.searchStudentsList();
     List<Courses> courses = service.searchStudentsCourseList();
     model.addAttribute("studentList", converter.convertStudentDetails(students, courses));
     model.addAttribute("courseList", courses);
@@ -50,22 +49,24 @@ public class StudentController {
   //受講生情報を登録したのち、コース情報を登録する。
   @GetMapping("/newStudent")
   public String newStudent(Model model) {
-    model.addAttribute("studentDetail", new StudentDetail());
+    model.addAttribute("student", new Student());
     return "registerStudent";
   }
 
   @PostMapping("/registerStudent")
-  public String registerStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result) {
+  public String registerStudent(@ModelAttribute Student student, BindingResult result) {
     if (result.hasErrors()) {
       return "registerStudent";
     }
 
-    repository.registerStudent(studentDetail.getStudent());
-    String registeredStudentId = studentDetail.getStudent().getId();
+    repository.registerStudent(student);
+    String registeredStudentId = student.getId();
     return "redirect:/newCourse?studentId=" + registeredStudentId;
   }
 
 
+  //受講生情報を新規登録したときに、コース情報も登録する。
+  //コース情報のみを後から登録することもできる。
   @GetMapping("/newCourse")
   public String newCourse(@RequestParam(value = "studentId", required = false) String studentId,
       Model model) {
@@ -80,10 +81,27 @@ public class StudentController {
     if (result.hasErrors()) {
       return "registerCourse";
     }
-
     repository.registerCourse(courses);
     return "redirect:/studentList";
+  }
 
+  @GetMapping("/formUpdateStudent")
+  public String formUpdateStudent(@RequestParam(value = "id", required = true) String id,
+      Model model) {
+    Student student = new Student(id);
+    model.addAttribute("student", student);
+    return "updateStudent";
+  }
+
+  @PostMapping("/updateStudent")
+  public String updateStudent(@ModelAttribute Student student, BindingResult result) {
+    if (result.hasErrors()) {
+      return "updateStudent";
+    }
+
+    repository.updateStudent(student);
+
+    return "redirect:/studentList";
   }
 
 

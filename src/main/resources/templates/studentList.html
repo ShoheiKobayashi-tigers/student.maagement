@@ -15,6 +15,7 @@
     <th>ニックネーム</th>
     <th>メールアドレス</th>
     <th>地域</th>
+    <th>誕生日</th>
     <th>年齢</th>
     <th>性別</th>
     <th>備考</th>
@@ -28,12 +29,14 @@
     <td th:text="${studentDetail.student.nickname}">ちか</td>
     <td th:text="${studentDetail.student.mail}">KoujiChikamoto@gmail.com</td>
     <td th:text="${studentDetail.student.city}">兵庫</td>
+    <td th:text="${studentDetail.student.birthday}">1991年6月11日</td>
     <td th:text="${studentDetail.student.age}">30</td>
     <td th:text="${studentDetail.student.gender}">male</td>
     <td th:text="${studentDetail.student.remark}">特になし</td>
     <td>
       <a th:href="@{/newCourse(studentId=${studentDetail.student.id})}">コース追加</a>
       <a th:href="@{/courseList(studentId=${studentDetail.student.id})}">受講コース一覧</a>
+      <a th:href="@{/formUpdateStudent(id=${studentDetail.student.id})}">受講生情報更新</a>
     </td>
   </tr>
 

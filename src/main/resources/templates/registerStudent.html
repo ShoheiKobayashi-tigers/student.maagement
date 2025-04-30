@@ -5,27 +5,29 @@
 </head>
 <body>
 <h1>受講生登録</h1>
-<form th:action="@{/registerStudent}" th:object="${studentDetail}" method="post">
+<form th:action="@{/registerStudent}" th:object="${student}" method="post">
   <div style="width: 200px;">
     <label for="id">ID:</label>
-    <input type="text" id="id" th:field="*{student.id}" required/>
+    <input type="text" id="id" th:field="*{id}" required/>
   </div>
   <div style="width: 200px;"><label for="name">名前:</label>
-    <input type="text" id="name" th:field="*{student.name}" required/></div>
+    <input type="text" id="name" th:field="*{name}" required/></div>
   <div style="width: 200px;"><label for="furigana">ふりがな:</label>
-    <input type="text" id="furigana" th:field="*{student.furigana}" required/></div>
+    <input type="text" id="furigana" th:field="*{furigana}" required/></div>
   <div style="width: 200px;"><label for="nickname">ニックネーム:</label>
-    <input type="text" id="nickname" th:field="*{student.nickname}" required/></div>
+    <input type="text" id="nickname" th:field="*{nickname}" required/></div>
   <div style="width: 200px;"><label for="mail">メールアドレス:</label>
-    <input type="text" id="mail" th:field="*{student.mail}" required/></div>
+    <input type="text" id="mail" th:field="*{mail}" required/></div>
   <div style="width: 200px;"><label for="city">出身地（市区町村）:</label>
-    <input type="text" id="city" th:field="*{student.city}" required/></div>
+    <input type="text" id="city" th:field="*{city}" required/></div>
+  <div style="width: 200px;"><label for="birthday">受講開始:</label>
+    <input type="text" id="birthday" th:field="*{birthday}" required/></div>
   <div style="width: 200px;"><label for="age">年齢:</label>
-    <input type="number" id="age" th:field="*{student.age}" required/></div>
+    <input type="number" id="age" th:field="*{age}" required/></div>
   <div style="width: 200px;"><label for="gender">性別:</label>
-    <input type="text" id="gender" th:field="*{student.gender}" required/></div>
+    <input type="text" id="gender" th:field="*{gender}" required/></div>
   <div style="width: 200px;"><label for="remark">備考:</label>
-    <input type="text" id="remark" th:field="*{student.remark}" required/>
+    <input type="text" id="remark" th:field="*{remark}"/>
   </div>
   <div>
     <button type="submit">登録</button>
