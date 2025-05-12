@@ -6,6 +6,7 @@
 <body>
 <h1>受講生情報更新</h1>
 <form th:action="@{/updateStudent}" th:object="${student}" method="post">
+  <input type="hidden" name="_method" value="PATCH"/>
   <div style="width: 200px;"><label for="id">ID:</label>
     <input type="text" id="id" th:field="*{id}" readonly/></div>
   <div style="width: 200px;"><label for="name">名前:</label>

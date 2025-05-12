@@ -5,8 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import shohei.student.management.controller.converter.StudentConverter;
@@ -29,6 +31,8 @@ public class StudentController {
   //受講生情報を表示
   @GetMapping("/studentList")
   public String getStudentList(Model model) {
+    service.updateAllStudentAges();
+//    service.migrateStudentIdsToUuid();
     List<shohei.student.management.data.Student> students = service.searchStudentsList();
     List<Courses> courses = service.searchStudentsCourseList();
     model.addAttribute("studentList", converter.convertStudentDetails(students, courses));
@@ -37,7 +41,7 @@ public class StudentController {
     return "studentList";
   }
 
-  //コース情報を表示
+  //受講生に紐づくコース情報を表示
   @GetMapping("/courseList")
   public String getCourseListByStudentId(@RequestParam("studentId") String studentId, Model model) {
     List<Courses> courses = service.searchCoursesByStudentId(studentId);
@@ -46,10 +50,20 @@ public class StudentController {
     return "courseList";
   }
 
-  //受講生情報を登録したのち、コース情報を登録する。
+  //全受講コース情報一覧を表示
+  @GetMapping("/allCourseList")
+  public String getCourseList(Model model) {
+    List<Courses> allCourses = service.searchStudentsCourseList();
+    model.addAttribute("courseList", allCourses);
+    return "courseList";
+  }
+
+  //受講生情報を登録したのち、コース情報登録画面に遷移する。
   @GetMapping("/newStudent")
   public String newStudent(Model model) {
     model.addAttribute("student", new Student());
+    List<String> prefectures = service.getPrefectureList();
+    model.addAttribute("prefectures", prefectures);
     return "registerStudent";
   }
 
@@ -58,8 +72,7 @@ public class StudentController {
     if (result.hasErrors()) {
       return "registerStudent";
     }
-
-    repository.registerStudent(student);
+    service.postStudent(student);
     String registeredStudentId = student.getId();
     return "redirect:/newCourse?studentId=" + registeredStudentId;
   }
@@ -70,30 +83,33 @@ public class StudentController {
   @GetMapping("/newCourse")
   public String newCourse(@RequestParam(value = "studentId", required = false) String studentId,
       Model model) {
-    Courses courses = new Courses(studentId);
-    model.addAttribute("courses", courses);
+    model.addAttribute("courses", new Courses(studentId));
+    List<String> courseNameList = service.getFixedCourseNameList();
+    model.addAttribute("courseList", courseNameList);
     return "registerCourse";
   }
 
 
   @PostMapping("/registerCourse")
-  public String registerCourse(@ModelAttribute Courses courses, BindingResult result) {
+  public String registerCourse(@ModelAttribute Courses courses,
+      Model model, BindingResult result) {
     if (result.hasErrors()) {
+      model.addAttribute("courseList", service.getFixedCourseNameList());
       return "registerCourse";
     }
-    repository.registerCourse(courses);
+    service.postCourses(courses);
     return "redirect:/studentList";
   }
 
   @GetMapping("/formUpdateStudent")
-  public String formUpdateStudent(@RequestParam(value = "id", required = true) String id,
+  public String formUpdateStudent(@RequestParam(value = "id", required = false) String id,
       Model model) {
     Student student = new Student(id);
     model.addAttribute("student", student);
     return "updateStudent";
   }
 
-  @PostMapping("/updateStudent")
+  @PatchMapping("/updateStudent")
   public String updateStudent(@ModelAttribute Student student, BindingResult result) {
     if (result.hasErrors()) {
       return "updateStudent";
@@ -103,6 +119,33 @@ public class StudentController {
 
     return "redirect:/studentList";
   }
+
+  @GetMapping("/confirmDelete")
+  public String confirmDelete(@RequestParam(value = "id", required = false) String id,
+      Model model) {
+    List<Student> studentInfo = service.searchStudentById(id);
+    model.addAttribute("studentInfo", studentInfo);
+    model.addAttribute("id", id);
+    return "deleteStudent";
+  }
+
+  @DeleteMapping("/deleteStudent")
+  public String deleteStudent(@ModelAttribute Student student, BindingResult result) {
+    if (result.hasErrors()) {
+      return "deleteStudent";
+    }
+
+    repository.deleteStudent(student);
+
+    return "redirect:/studentList";
+  }
+
+//  @GetMapping("/admin/updateAllCourseIds")
+//  @ResponseBody
+//  public String updateAllCourseIdsEndpoint() {
+//    service.updateAllCourseIds();
+//    return "コースIDの一括更新が完了しました。";
+//  }
 
 
 }

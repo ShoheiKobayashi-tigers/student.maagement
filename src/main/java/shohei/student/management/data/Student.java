@@ -1,8 +1,9 @@
 package shohei.student.management.data;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @Setter
@@ -14,7 +15,8 @@ public class Student {
   private String nickname;
   private String mail;
   private String city;
-  private LocalDateTime birthday;
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  private LocalDate birthday;
   private int age;
   private String gender;
   private String remark;

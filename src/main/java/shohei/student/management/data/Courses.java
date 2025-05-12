@@ -1,6 +1,6 @@
 package shohei.student.management.data;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,8 +11,8 @@ public class Courses {
   private String courseId;
   private String studentId;
   private String courseName;
-  private LocalDateTime whenStart;
-  private LocalDateTime whenComplete;
+  private LocalDate whenStart;
+  private LocalDate whenComplete;
 
   public Courses(String studentId) {
     this.studentId = studentId;

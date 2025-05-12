@@ -2,10 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>受講生情報一覧</title>
+  <title>受講生情報管理システム</title>
 </head>
 <body>
-<h1>受講生情報一覧</h1>
+<h1>受講生情報管理システム</h1>
+<h2>受講生情報一覧</h2>
 <table border="1">
   <thead>
   <tr>
@@ -19,6 +20,7 @@
     <th>年齢</th>
     <th>性別</th>
     <th>備考</th>
+    <th>オプション</th>
   </tr>
   </thead>
   <tbody>
@@ -29,40 +31,28 @@
     <td th:text="${studentDetail.student.nickname}">ちか</td>
     <td th:text="${studentDetail.student.mail}">KoujiChikamoto@gmail.com</td>
     <td th:text="${studentDetail.student.city}">兵庫</td>
-    <td th:text="${studentDetail.student.birthday}">1991年6月11日</td>
+    <td th:text="${#temporals.format(studentDetail.student.birthday, 'yyyy年MM月dd日')}">
+      1991年6月11日
+    </td>
+
     <td th:text="${studentDetail.student.age}">30</td>
     <td th:text="${studentDetail.student.gender}">male</td>
     <td th:text="${studentDetail.student.remark}">特になし</td>
     <td>
-      <a th:href="@{/newCourse(studentId=${studentDetail.student.id})}">コース追加</a>
       <a th:href="@{/courseList(studentId=${studentDetail.student.id})}">受講コース一覧</a>
+      <a th:href="@{/newCourse(studentId=${studentDetail.student.id})}">コース追加</a>
       <a th:href="@{/formUpdateStudent(id=${studentDetail.student.id})}">受講生情報更新</a>
+      <a th:href="@{/confirmDelete(id=${studentDetail.student.id})}">受講生情報削除</a>
     </td>
   </tr>
-
-
   </tbody>
 </table>
-<h1>コース情報一覧</h1>
-<table border="1">
-  <thead>
-  <tr>
-    <th>コースID</th>
-    <th>受講生ID</th>
-    <th>コース名</th>
-    <th>受講開始</th>
-    <th>受講終了予定</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr th:each="course : ${courseList}">
-    <td th:text="${course.courseId}">001</td>
-    <td th:text="${course.studentId}">近本光司</td>
-    <td th:text="${course.courseName}">ちかもとこうじ</td>
-    <td th:text="${course.whenStart}">2025-05-01</td>
-    <td th:text="${course.whenComplete}">2025-06-30</td>
-  </tr>
-  </tbody>
-</table>
+<h2>新規受講生情報登録
+  <a th:href="@{/newStudent}">登録画面へ</a>
+</h2>
+<h2>全受講コース一覧
+  <a th:href="@{/allCourseList}">一覧画面へ</a>
+</h2>
+
 </body>
 </html>
