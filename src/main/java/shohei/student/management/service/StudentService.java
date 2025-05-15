@@ -5,12 +5,14 @@ import java.time.Year;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shohei.student.management.data.Courses;
 import shohei.student.management.data.Student;
+import shohei.student.management.form.UpdateStudentForm;
 import shohei.student.management.repository.StudentRepository;
 
 
@@ -18,14 +20,11 @@ import shohei.student.management.repository.StudentRepository;
 public class StudentService {
 
   private StudentRepository repository;
-//  private StudentsCoursesRepository studentsCoursesRepository;
 
 
   @Autowired
-  public StudentService(StudentRepository repository/*,
-      StudentsCoursesRepository studentsCoursesRepository*/) {
+  public StudentService(StudentRepository repository) {
     this.repository = repository;
-//    this.studentsCoursesRepository = studentsCoursesRepository;
 
   }
 
@@ -64,11 +63,14 @@ public class StudentService {
     return repository.findStudent(id);
   }
 
+
   @Transactional
   public void postCourses(Courses courses) {
     courses.setCourseId(generateCourseCode(courses.getCourseName()));
     repository.registerCourse(courses);
   }
+
+  int sequence = 1;
 
   public String generateCourseCode(String courseName) {
     String code = switch (courseName) {
@@ -84,7 +86,7 @@ public class StudentService {
 
     String currentYear = String.valueOf(Year.now().getValue());
     String categoryName = code + "-" + currentYear;
-    int sequence = 1;
+
     String newCourseId = categoryName + "-" + String.format("%03d", sequence);
 
     while (repository.checkCourseId(newCourseId)) {
@@ -120,6 +122,21 @@ public class StudentService {
     return 0;
   }
 
+
+  @Transactional
+  public UpdateStudentForm getUpdateStudentFormById(String id) {
+    Map<String, String> updateStudentData = repository.findUpdateStudentData(id);
+    if (updateStudentData == null) {
+      return null; // または例外
+    }
+    return new UpdateStudentForm(updateStudentData);
+  }
+
+  @Transactional
+  public void updateStudentData(UpdateStudentForm updateStudentForm) {
+    repository.updateStudent(updateStudentForm);
+  }
+
   @Transactional
   public void updateAllStudentAges() {
     List<Student> allStudents = repository.findAll();
@@ -131,37 +148,6 @@ public class StudentService {
     }
     System.out.println("Application startup: Student ages updated.");
   }
-
-//  @Transactional
-//  public void migrateStudentIdsToUuid() {
-//    List<Student> allStudents = repository.findAll();
-//    Map<String, String> oldIdToNewUuid = new HashMap<>();
-//
-//    for (Student student : allStudents) {
-//      String oldId = student.getId();
-//      String newUuid = UUID.randomUUID().toString();
-//      student.setId(newUuid);
-//      oldIdToNewUuid.put(oldId, newUuid);
-//      repository.updateId(newUuid, oldId);
-//    }
-//
-//    List<Courses> allCourses = studentsCoursesRepository.findAll();
-//    for (Courses course : allCourses) {
-//      String oldStudentId = course.getStudentId();
-//      if (oldIdToNewUuid.containsKey(oldStudentId)) {
-//        course.setStudentId(oldIdToNewUuid.get(oldStudentId));
-//        studentsCoursesRepository.updateStudentId(course.getStudentId(),
-//            oldStudentId);
-//      }
-//    }
-//  }
-
-//  @Transactional
-//  public void updateAllCourseIds() {
-//    for (Courses course : repository.findAllCourses()) {
-//      repository.updateCourse(generateCourseCode(course.getCourseName()), course.getCourseId());
-//    }
-//  }
 
 
 }

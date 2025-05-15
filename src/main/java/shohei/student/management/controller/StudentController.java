@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import shohei.student.management.controller.converter.StudentConverter;
 import shohei.student.management.data.Courses;
 import shohei.student.management.data.Student;
+import shohei.student.management.form.UpdateStudentForm;
 import shohei.student.management.repository.StudentRepository;
 import shohei.student.management.service.StudentService;
 
@@ -32,7 +33,6 @@ public class StudentController {
   @GetMapping("/studentList")
   public String getStudentList(Model model) {
     service.updateAllStudentAges();
-//    service.migrateStudentIdsToUuid();
     List<shohei.student.management.data.Student> students = service.searchStudentsList();
     List<Courses> courses = service.searchStudentsCourseList();
     model.addAttribute("studentList", converter.convertStudentDetails(students, courses));
@@ -104,18 +104,22 @@ public class StudentController {
   @GetMapping("/formUpdateStudent")
   public String formUpdateStudent(@RequestParam(value = "id", required = false) String id,
       Model model) {
-    Student student = new Student(id);
-    model.addAttribute("student", student);
+    List<Student> studentInfo = service.searchStudentById(id);
+    model.addAttribute("studentInfo", studentInfo);
+    model.addAttribute("id", id);
+    model.addAttribute("updateStudentForm", service.getUpdateStudentFormById(id));
+
     return "updateStudent";
   }
 
   @PatchMapping("/updateStudent")
-  public String updateStudent(@ModelAttribute Student student, BindingResult result) {
+  public String updateStudent(@ModelAttribute UpdateStudentForm updateStudentForm,
+      BindingResult result) {
     if (result.hasErrors()) {
       return "updateStudent";
     }
 
-    repository.updateStudent(student);
+    service.updateStudentData(updateStudentForm);
 
     return "redirect:/studentList";
   }
@@ -139,13 +143,6 @@ public class StudentController {
 
     return "redirect:/studentList";
   }
-
-//  @GetMapping("/admin/updateAllCourseIds")
-//  @ResponseBody
-//  public String updateAllCourseIdsEndpoint() {
-//    service.updateAllCourseIds();
-//    return "コースIDの一括更新が完了しました。";
-//  }
 
 
 }

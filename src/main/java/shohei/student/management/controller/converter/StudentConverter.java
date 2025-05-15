@@ -5,16 +5,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import shohei.student.management.data.Courses;
+import shohei.student.management.data.Student;
 import shohei.student.management.domain.StudentDetail;
 
 @Component
 public class StudentConverter {
 
   public List<StudentDetail> convertStudentDetails(
-      List<shohei.student.management.data.Student> students,
+      List<Student> students,
       List<Courses> courses) {
     List<StudentDetail> studentDetails = new ArrayList<>();
-    for (shohei.student.management.data.Student student : students) {
+    students.forEach(student -> {
       StudentDetail studentDetail = new StudentDetail();
       studentDetail.setStudent(student);
       List<Courses> list = courses.stream()
@@ -23,7 +24,7 @@ public class StudentConverter {
       List<Courses> convertCourses = list;
       studentDetail.setStudentCourses(convertCourses);
       studentDetails.add(studentDetail);
-    }
+    });
     return studentDetails;
   }
 
