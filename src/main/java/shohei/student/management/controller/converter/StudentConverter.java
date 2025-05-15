@@ -11,10 +11,11 @@ import shohei.student.management.domain.StudentDetail;
 @Component
 public class StudentConverter {
 
-  public List<StudentDetail> convertStudentDetails(List<Student> students,
+  public List<StudentDetail> convertStudentDetails(
+      List<Student> students,
       List<Courses> courses) {
     List<StudentDetail> studentDetails = new ArrayList<>();
-    for (Student student : students) {
+    students.forEach(student -> {
       StudentDetail studentDetail = new StudentDetail();
       studentDetail.setStudent(student);
       List<Courses> list = courses.stream()
@@ -23,7 +24,7 @@ public class StudentConverter {
       List<Courses> convertCourses = list;
       studentDetail.setStudentCourses(convertCourses);
       studentDetails.add(studentDetail);
-    }
+    });
     return studentDetails;
   }
 

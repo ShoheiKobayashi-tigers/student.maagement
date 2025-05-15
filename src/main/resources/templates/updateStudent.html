@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>受講生情報更新</title>
+</head>
+<body>
+<h1>受講生情報更新</h1>
+<h2>以下の受講生情報を更新しようとしています</h2>
+<table border="1">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>名前</th>
+    <th>ふりがな</th>
+    <th>ニックネーム</th>
+    <th>メールアドレス</th>
+    <th>地域</th>
+    <th>誕生日</th>
+    <th>年齢</th>
+    <th>性別</th>
+    <th>備考</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="searchedStudent : ${studentInfo}">
+    <td th:text="${searchedStudent.id}"></td>
+    <td th:text="${searchedStudent.name}"></td>
+    <td th:text="${searchedStudent.furigana}"></td>
+    <td th:text="${searchedStudent.nickname}"></td>
+    <td th:text="${searchedStudent.mail}"></td>
+    <td th:text="${searchedStudent.city}"></td>
+    <td th:text="${#temporals.format(searchedStudent.birthday, 'yyyy年MM月dd日')}"></td>
+    <td th:text="${searchedStudent.age}"></td>
+    <td th:text="${searchedStudent.gender}"></td>
+    <td th:text="${searchedStudent.remark}"></td>
+  </tr>
+  </tbody>
+
+</table>
+<h2>入力してください</h2>
+<form th:action="@{/updateStudent}" th:object="${updateStudentForm}" method="post">
+  <input type="hidden" name="_method" value="PATCH"/>
+  <input type="hidden" name="id" th:value="${id}"/>
+  <div style="width: 200px;"><label for="name">名前:</label>
+    <input type="text" id="name" th:field="*{name}"/></div>
+  <div style="width: 200px;"><label for="furigana">ふりがな:</label>
+    <input type="text" id="furigana" th:field="*{furigana}"/></div>
+  <div style="width: 200px;"><label for="nickname">ニックネーム:</label>
+    <input type="text" id="nickname" th:field="*{nickname}"/></div>
+  <div style="width: 200px;"><label for="mail">メールアドレス:</label>
+    <input type="text" id="mail" th:field="*{mail}"/></div>
+  <div style="width: 200px;"><label for="remark">備考:</label>
+    <input type="text" id="remark" th:field="*{remark}"/>
+  </div>
+  <div>
+    <button type="submit" class="btn btn-danger ml-5"
+            onclick="return confirm('更新してもよろしいですか？');">更新
+    </button>
+  </div>
+</form>
+</body>
+</html>

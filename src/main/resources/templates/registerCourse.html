@@ -6,16 +6,22 @@
 <body>
 <h1>コース情報登録</h1>
 <form th:action="@{/registerCourse}" th:object="${courses}" method="post">
-  <div style="width: 200px;"><label for="courseId">コースID:</label>
-    <input type="text" id="courseId" th:field="*{courseId}" required/></div>
-  <div style="width: 200px;"><label for="studentId">受講生ID:</label>
-    <input type="text" id="studentId" th:field="*{studentId}" readonly/></div>
-  <div style="width: 200px;"><label for="furigana">コース名:</label>
-    <input type="text" id="furigana" th:field="*{courseName}" required/></div>
-  <div style="width: 200px;"><label for="nickname">受講開始:</label>
-    <input type="text" id="nickname" th:field="*{whenStart}" required/></div>
-  <div style="width: 200px;"><label for="mail">受講終了予定:</label>
-    <input type="text" id="mail" th:field="*{whenComplete}" required/></div>
+  <input type="hidden" th:field="*{studentId}"/>
+  <div>
+    <label for="courseName">コース名:</label>
+    <select id="courseName" th:field="*{courseName}" required>
+      <option value="">選択してください</option>
+      <option th:each="courseName : ${courseList}"
+              th:value="${courseName}"
+              th:text="${courseName}">
+        <span th:text="${courseName}"></span>
+      </option>
+    </select>
+  </div>
+  <div style="width: 200px;"><label for="whenStart">受講開始:</label>
+    <input type="date" id="whenStart" th:field="*{whenStart}" required/></div>
+  <div style="width: 200px;"><label for="whenComplete">受講終了予定:</label>
+    <input type="date" id="whenComplete" th:field="*{whenComplete}" required/></div>
   <div>
     <button type="submit">登録</button>
   </div>

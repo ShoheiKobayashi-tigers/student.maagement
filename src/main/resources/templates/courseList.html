@@ -21,8 +21,8 @@
     <td th:text="${course.courseId}">001</td>
     <td th:text="${course.studentId}">近本光司</td>
     <td th:text="${course.courseName}">ちかもとこうじ</td>
-    <td th:text="${course.whenStart}">2025-05-01</td>
-    <td th:text="${course.whenComplete}">2025-06-30</td>
+    <td th:text="${#temporals.format(course.whenStart, 'yyyy年MM月dd日')}">2025-05-01</td>
+    <td th:text="${#temporals.format(course.whenComplete, 'yyyy年MM月dd日')}">2025-06-30</td>
   </tr>
   </tbody>
 </table>
